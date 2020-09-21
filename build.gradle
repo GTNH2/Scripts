@@ -16,7 +16,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.CDAGaming:ForgeGradle:1c670759c5'
+        //Defaults to Java 8 & UTF-8 encoding
+        classpath 'com.github.GTNH2:ForgeGradle:061ac05b6c'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
     }
 }
@@ -26,12 +27,13 @@ apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-idea.module.downloadJavadoc = true
-idea.module.downloadSources = true
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-compileJava.options.encoding = 'UTF-8'
+idea {
+    module {
+        inheritOutputDirs = true
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
 
 version = "1.0"
 group = "com.github.GTNH2Mega" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -47,13 +49,15 @@ dependencies {
 
 processResources
 {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs {
+        property "version",  project.version
+        property "mcversion", project.minecraft.version
+    }
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
         
     from(sourceSets.main.resources.srcDirs) {
