@@ -34,8 +34,13 @@ idea {
         downloadSources = true
     }
 }
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
 
-version = "1.0"
+version = "${config.scripts_version}-${config.minecraft_version}"
 group = "com.github.GTNH2Mega" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GTNH2MegaCore" + version
 
@@ -43,10 +48,10 @@ minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "run"
 }
-
+repositories {
+}
 dependencies {
 }
-
 processResources
 {
     inputs {
